@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Page</title>
+</head>
+<body>
+    <h1>Workout Page</h1>
+
+    <!-- Form for submitting gender and age -->
+    <form id="workoutForm" action="/button" method="POST"> <!-- Directly providing the URL -->
+        <div>
+            <button type="button" onclick="showAgeSelector('male')">Male</button>
+            <button type="button" onclick="showAgeSelector('female')">Female</button>
+        </div>
+
+        <div id="genderMessage" style="display: none;"></div>
+
+        <div id="ageSelector" style="display: none;">
+            <label for="age">Select Your Age:</label>
+            <select id="age" name="age">
+                <!-- Age options will be populated using JavaScript -->
+            </select>
+            <button type="button" onclick="returnToGender()">Return to Gender Selection</button>
+        </div>
+
+        <div id="workoutPlan" style="display: none;">
+            <h2>Your Workout Plan:</h2>
+            <p id="workoutPlanText">Please select your gender and age.</p>
+        </div>
+
+        <!-- New button for notes -->
+        <button type="button" onclick="goToNote()">Notes</button>
+
+        <!-- Button to go to the challenge page -->
+        <button type="button" onclick="goToChallenge()">Challenge</button>
+
+        <!-- Button to go to the comments page -->
+        <button type="button" onclick="goToComments()">Comments</button>
+
+        <input type="hidden" name="gender" id="selectedGender"/>
+        <input type="submit" value="Fast Exercise" id="fastExerciseButton" style="display: none;"/>
+        <button type="submit" name="personalExercise" value="true" id="personalExerciseButton" style="display: none;">Personal Exercise</button>
+    </form>
+
+    <script>
+        // Function to populate age options from 18 to 110
+        function populateAgeOptions() {
+            var ageSelect = document.getElementById('age');
+            for (var i = 18; i <= 110; i++) {
+                var option = document.createElement('option');
+                option.value = i.toString(); // Convert integer to string
+                option.textContent = i.toString(); // Convert integer to string
+                ageSelect.appendChild(option);
+            }
+        }
+
+        function showAgeSelector(gender) {
+            document.getElementById('genderMessage').textContent = "I am " + gender;
+            document.getElementById('genderMessage').style.display = 'block';
+            document.getElementById('ageSelector').style.display = 'block';
+            document.getElementById('workoutPlan').style.display = 'block'; // Show the workout plan section
+            document.getElementById('workoutPlanText').textContent = `Please select your age for ${gender}.`;
+            document.getElementById('selectedGender').value = gender; // Store selected gender in a hidden input field
+
+            // Change the text of the personalExerciseButton based on gender
+            if (gender === 'male') {
+                document.getElementById('personalExerciseButton').textContent = 'Personal Exercise for Men';
+            } else if (gender === 'female') {
+                document.getElementById('personalExerciseButton').textContent = 'Personal Exercise for Women';
+            }
+
+            // Populate age options when the gender is selected
+            populateAgeOptions();
+            // Show the exercise buttons
+            document.getElementById('fastExerciseButton').style.display = 'inline';
+            document.getElementById('personalExerciseButton').style.display = 'inline';
+        }
+
+        function returnToGender() {
+            document.getElementById('genderMessage').style.display = 'none';
+            document.getElementById('ageSelector').style.display = 'none';
+            document.getElementById('workoutPlan').style.display = 'none';
+            // Hide the exercise buttons
+            document.getElementById('fastExerciseButton').style.display = 'none';
+            document.getElementById('personalExerciseButton').style.display = 'none';
+        }
+
+        // Function to redirect to note route
+        function goToNote() {
+            window.location.href = '/note'; // Direct URL
+        }
+
+        // Function to redirect to challenge page
+        function goToChallenge() {
+            window.location.href = '/challenge'; // Direct URL
+        }
+
+        // Function to redirect to comments page
+        function goToComments() {
+            window.location.href = '/comments'; // Direct URL
+        }
+    </script>
+</body>
+</html>

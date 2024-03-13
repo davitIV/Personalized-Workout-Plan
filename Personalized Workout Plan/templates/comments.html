@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Comments</h1>
+    <div id="commentsContainer">
+        <!-- Loop through each comment and display it -->
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>User:</strong> {{ comment.user_id }}</p>
+                <p><strong>Rating:</strong> {{ comment.rating }}</p>
+                <p><strong>Comment:</strong> {{ comment.comment }}</p>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+</body>
+</html>

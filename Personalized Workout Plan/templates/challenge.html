@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge Page</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Challenge Page</h1>
+    <div id="challengeContainer">
+        <button id="startButton">Start</button>
+        <div id="challengeMessage"></div>
+        <div id="timer"></div>
+        <button id="finishButton" style="display: none;">Finish</button>
+        <div id="rateSection" style="display: none;">
+            <h2>Rate Your Workout</h2>
+            <form id="ratingForm">
+                <label for="rating">Rate your workout (1-10):</label>
+                <input type="number" id="rating" name="rating" min="1" max="10" required>
+                <div id="commentSection">
+                    <label for="comment">Additional Comments:</label>
+                    <textarea id="comment" name="comment"></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentExerciseIndex = 0;
+        let timerInterval;
+
+        const exercises = [
+            { name: "pushups", count: 5 },
+            { name: "pullups", count: 5 },
+            { name: "sit-ups", count: 10 },
+            { name: "squats", count: 15 },
+            // Add more exercises as needed
+        ];
+
+        function startChallenge() {
+            document.getElementById("startButton").style.display = "none";
+            document.getElementById("finishButton").style.display = "inline";
+            nextExercise();
+        }
+
+        function nextExercise() {
+            if (currentExerciseIndex < exercises.length) {
+                const exercise = exercises[currentExerciseIndex];
+                document.getElementById("challengeMessage").textContent = `Next: Do ${exercise.count} ${exercise.name}`;
+                startTimer();
+            } else {
+                document.getElementById("challengeMessage").textContent = "Challenge Completed!";
+                clearInterval(timerInterval);
+                document.getElementById("timer").textContent = "";
+                document.getElementById("finishButton").style.display = "none";
+                document.getElementById("rateSection").style.display = "block";
+            }
+        }
+
+        function startTimer() {
+            let seconds = 0;
+            timerInterval = setInterval(() => {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                document.getElementById("timer").textContent = `Time: ${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+            }, 1000);
+        }
+
+        function finishChallenge() {
+            currentExerciseIndex++;
+            clearInterval(timerInterval);
+            document.getElementById("timer").textContent = "";
+            nextExercise();
+        }
+
+        function submitRating(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById("ratingForm"));
+
+            // Send the form data to the server using fetch
+            fetch('/save_rating', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Rating and comment submitted successfully.');
+                    // Optionally, you can redirect the user to a thank you page or another page after submitting the rating and comment
+                } else {
+                    console.error('Failed to submit rating and comment.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        document.getElementById("startButton").addEventListener("click", startChallenge);
+        document.getElementById("finishButton").addEventListener("click", finishChallenge);
+        document.getElementById("ratingForm").addEventListener("submit", submitRating);
+    </script>
+</body>
+</html>

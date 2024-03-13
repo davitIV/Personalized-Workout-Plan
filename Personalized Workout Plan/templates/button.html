@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Page</title>
+</head>
+<body>
+    <h1>Button Page</h1>
+
+    <!-- Displaying the selected gender and age -->
+    <p>Your Gender: <span id="gender">{{ gender }}</span></p>
+    <p>Your Age: <span id="age">{{ age }}</span></p>
+
+    <!-- Div to display workout instructions -->
+    <div id="instructions"></div>
+
+    <!-- Here you can add your workout buttons or any other content -->
+    <button id="chest">Chest</button>
+    <button id="legs">Legs</button>
+    <button id="arms">Arms</button>
+    <button id="back">Back</button>
+
+    <script>
+        // Function to display workout instructions based on button clicked
+        function displayMessage(workout) {
+            var gender = document.getElementById('gender').textContent;
+            var age = parseInt(document.getElementById('age').textContent);
+            var message;
+
+            // Check which workout button was clicked and set appropriate message
+            switch (workout) {
+                case 'chest':
+                    message = "Perform 10 bench presses.";
+                    break;
+                case 'legs':
+                    message = "Perform 10 squats.";
+                    break;
+                case 'arms':
+                    message = "Perform 10 bicep curls.";
+                    break;
+                case 'back':
+                    message = "Perform 10 pull-ups.";
+                    break;
+                default:
+                    message = "Select a workout.";
+            }
+
+            // Display the message in the instructions div
+            document.getElementById('instructions').textContent = message;
+        }
+
+        // Add event listeners to the buttons
+        document.getElementById('chest').addEventListener('click', function() {
+            displayMessage('chest');
+        });
+        document.getElementById('legs').addEventListener('click', function() {
+            displayMessage('legs');
+        });
+        document.getElementById('arms').addEventListener('click', function() {
+            displayMessage('arms');
+        });
+        document.getElementById('back').addEventListener('click', function() {
+            displayMessage('back');
+        });
+    </script>
+</body>
+</html>
